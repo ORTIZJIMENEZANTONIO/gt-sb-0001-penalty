@@ -20,6 +20,7 @@ import {
 
 import { ComerPenaltyService } from './comer-penalty.service';
 import { FinalDate } from './dto/get-final-date.dto';
+import { ReleasePenaltyDto } from './dto/release-penalty.dto';
 
 @ApiCreatedResponse()
 @Controller('comer-penalty')
@@ -42,19 +43,30 @@ export class ComerPenaltyController {
 
   async updatePenalty() {}
 
-  async releasePenalty() {}
-
-  @ApiOperation({ summary: 'FN_FECHA_FINAL ' })
+  @ApiOperation({ summary: 'PA_LIBERA_PENALIZACION' })
   @ApiBody({
     type: FinalDate,
-    //description: "Información de la Dirección a guardar",
   })
   @ApiResponse({
     status: 200,
     description: 'Fecha final',
     type: String,
   })
-  @Post()
+  @Post("release")
+  async releasePenalty(@Body() data: ReleasePenaltyDto) {
+    return await this.service.releasePenalty(data);
+  }
+
+  @ApiOperation({ summary: 'FN_FECHA_FINAL' })
+  @ApiBody({
+    type: FinalDate,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Fecha final',
+    type: String,
+  })
+  @Post("final-date")
   async getFinalDate(@Body() data: FinalDate) {
     return await this.service.getFinalDate(data);
   }
