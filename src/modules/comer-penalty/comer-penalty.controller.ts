@@ -7,7 +7,7 @@ import {
   Body,
   Param,
   Query,
-} from "@nestjs/common";
+} from '@nestjs/common';
 import {
   ApiOperation,
   ApiResponse,
@@ -16,13 +16,14 @@ import {
   ApiParam,
   ApiBody,
   ApiQuery,
-} from "@nestjs/swagger";
+} from '@nestjs/swagger';
 
-import { ComerPenaltyService } from "./comer-penalty.service";
+import { ComerPenaltyService } from './comer-penalty.service';
+import { FinalDate } from './dto/get-final-date.dto';
 
 @ApiCreatedResponse()
 @Controller('comer-penalty')
-@ApiTags("comer-penalty")
+@ApiTags('comer-penalty')
 export class ComerPenaltyController {
   constructor(private readonly service: ComerPenaltyService) {}
 
@@ -43,7 +44,20 @@ export class ComerPenaltyController {
 
   async releasePenalty() {}
 
-  async getFinalDate() {}
-  
+  @ApiOperation({ summary: 'FN_FECHA_FINAL ' })
+  @ApiBody({
+    type: FinalDate,
+    //description: "Información de la Dirección a guardar",
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Fecha final',
+    type: String,
+  })
+  @Post()
+  async getFinalDate(@Body() data: FinalDate) {
+    return await this.service.getFinalDate(data);
+  }
+
   async penaltyReverse() {}
 }

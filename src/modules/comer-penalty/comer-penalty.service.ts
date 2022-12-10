@@ -1,5 +1,6 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
+import { FinalDate } from "./dto/get-final-date.dto";
 
 @Injectable()
 export class ComerPenaltyService {
@@ -13,7 +14,10 @@ export class ComerPenaltyService {
 
   async releasePenalty() {}
 
-  async getFinalDate() {}
+  async getFinalDate(data: FinalDate) {
+    const pattern = { cmd: "getFinalDate" };
+    return await this.proxy.send(pattern, data);
+  }
   
   async penaltyReverse() {}
 }
