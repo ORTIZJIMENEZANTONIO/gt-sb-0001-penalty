@@ -13,6 +13,9 @@ const winston = require("winston");
 const path = require("path");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const core_1 = require("@nestjs/core");
+const exception_interceptor_1 = require("./core/exception.interceptor");
+const comer_penalty_module_1 = require("./modules/comer-penalty/comer-penalty.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -42,9 +45,13 @@ AppModule = __decorate([
                     new winston.transports.Console({ level: 'debug' }),
                 ],
             }),
+            comer_penalty_module_1.ComerPenaltyModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [
+            app_service_1.AppService,
+            { provide: core_1.APP_FILTER, useClass: exception_interceptor_1.AllExceptionsFilter },
+        ],
     })
 ], AppModule);
 exports.AppModule = AppModule;

@@ -1,10 +1,13 @@
-import { Module } from '@nestjs/common';
-import { WinstonModule } from 'nest-winston';
-import * as winston from 'winston';
-import * as path from 'path';
+import { Module } from "@nestjs/common";
+import { WinstonModule } from "nest-winston";
+import * as winston from "winston";
+import * as path from "path";
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { APP_FILTER } from "@nestjs/core";
+import { AllExceptionsFilter } from "./core/exception.interceptor";
+import { ComerPenaltyModule } from './modules/comer-penalty/comer-penalty.module';
 
 
 @Module({
@@ -38,9 +41,13 @@ import { AppService } from './app.service';
         new winston.transports.Console({ level: 'debug' }),
       ],
     }),
+    ComerPenaltyModule,
    
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    { provide: APP_FILTER, useClass: AllExceptionsFilter },
+  ],
 })
 export class AppModule {}
