@@ -19,8 +19,11 @@ import {
 } from '@nestjs/swagger';
 
 import { ComerPenaltyService } from './comer-penalty.service';
-import { FinalDate } from './dto/get-final-date.dto';
+import { FinalDateDto } from './dto/get-final-date.dto';
+import { RegisterPenaltyDto } from './dto/register-penalty.dto';
 import { ReleasePenaltyDto } from './dto/release-penalty.dto';
+import { ReversePenaltyDto } from './dto/reverse-penalty.dto';
+import { UpdatePenaltyDto } from './dto/update-penaly.dto';
 
 @ApiCreatedResponse()
 @Controller('comer-penalty')
@@ -28,48 +31,73 @@ import { ReleasePenaltyDto } from './dto/release-penalty.dto';
 export class ComerPenaltyController {
   constructor(private readonly service: ComerPenaltyService) {}
 
-  // @ApiOperation({ summary: "Guardar nueva Direccióne" })
-  // @ApiBody({
-  //   type: ComerLotDto,
-  //   description: "Información de la Dirección a guardar",
-  // })
-  // @ApiResponse({
-  //   status: 200,
-  //   description: "Guarda Dirección",
-  //   type: ComerLotDto,
-  // })
-  // @Post()
-  async registerPenalty() {}
-
-  async updatePenalty() {}
-
-  @ApiOperation({ summary: 'PA_LIBERA_PENALIZACION' })
+  @ApiOperation({ summary: 'PA_REGISTRA_PENALIZACION' })
   @ApiBody({
-    type: FinalDate,
+    type: RegisterPenaltyDto,
   })
   @ApiResponse({
     status: 200,
     description: 'Fecha final',
     type: String,
   })
-  @Post("release")
+  @Post('create')
+  async registerPenalty(@Body() data: RegisterPenaltyDto) {
+    return await this.service.registerPenalty(data);
+  }
+
+  @ApiOperation({ summary: 'PA_ACTUALIZA_PENALIZACION' })
+  @ApiBody({
+    type: UpdatePenaltyDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Información de penalización actualizada',
+    type: String,
+  })
+  @Put('updt')
+  async updatePenalty(@Body() data: UpdatePenaltyDto) {
+    return await this.service.updatePenalty(data);
+  }
+
+  @ApiOperation({ summary: 'PA_LIBERA_PENALIZACION' })
+  @ApiBody({
+    type: ReleasePenaltyDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Liberar penalización',
+    type: String,
+  })
+  @Post('release')
   async releasePenalty(@Body() data: ReleasePenaltyDto) {
     return await this.service.releasePenalty(data);
   }
 
   @ApiOperation({ summary: 'FN_FECHA_FINAL' })
   @ApiBody({
-    type: FinalDate,
+    type: FinalDateDto,
   })
   @ApiResponse({
     status: 200,
     description: 'Fecha final',
     type: String,
   })
-  @Post("final-date")
-  async getFinalDate(@Body() data: FinalDate) {
+  @Post('final-date')
+  async getFinalDate(@Body() data: FinalDateDto) {
     return await this.service.getFinalDate(data);
   }
 
-  async penaltyReverse() {}
+  @ApiOperation({ summary: 'PA_REVERSA_PENALIZACION' })
+  @ApiBody({
+    type: ReversePenaltyDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Fecha final',
+    type: String,
+  })
+  @Post('final-date')
+  async penaltyReverse(@Body() data: ReversePenaltyDto) {
+    return await this.service.penaltyReverse(data);
+  }
 }
