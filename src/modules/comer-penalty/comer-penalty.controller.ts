@@ -54,7 +54,7 @@ export class ComerPenaltyController {
     description: 'Información de penalización actualizada',
     type: String,
   })
-  @Put('updt')
+  @Put()
   async updatePenalty(@Body() data: UpdatePenaltyDto) {
     return await this.service.updatePenalty(data);
   }
@@ -96,7 +96,7 @@ export class ComerPenaltyController {
     description: 'Fecha final',
     type: String,
   })
-  @Post('final-date')
+  @Post('reverse')
   async penaltyReverse(@Body() data: ReversePenaltyDto) {
     return await this.service.penaltyReverse(data);
   }
